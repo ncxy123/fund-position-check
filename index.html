@@ -1,0 +1,49 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+  <head>
+    <meta charset="UTF-8" />
+    <meta
+      name="description"
+      content="一款轻量级基金持仓分析工具，支持上传持仓截图或导入示例数据，自动解析并计算总览指标、收益贡献度及组合体检评分，并提供清仓模拟测算与持仓问答辅助功能。"
+    />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>基金持仓体检</title>
+    <link rel="icon" href="./favicon.png" />
+    <script
+      type="module"
+      crossorigin
+      src="./assets/index.js"
+    ></script>
+    <link rel="stylesheet" crossorigin href="./assets/index.css" />
+    <link rel="stylesheet" id="fonts-code" href="https://miaoda-font.cdn.bcebos.com/static/font_v1/fonts-code.css" />
+    <script>
+      (function () {
+        const redirect = new URLSearchParams(location.search).get("redirect");
+        if (redirect && redirect !== location.pathname) {
+          history.replaceState(null, "", redirect);
+        }
+      })();
+    </script>
+  </head>
+  <body>
+    <div id="root"></div>
+    <script id="md-click">
+      window.mdClick = (e) => {
+        const target = e.target;
+        const { href, target: linkTarget } = target.dataset;
+        if (!href) return;
+        e.stopPropagation();
+        e.preventDefault();
+        const isBlank = linkTarget === "_blank";
+        if (isBlank || href.startsWith("http")) {
+          window.open(href, linkTarget || "_self");
+          return;
+        }
+        const finalHref = href.startsWith("/") ? href : "/" + href;
+        window.history.pushState({}, "", finalHref);
+        window.dispatchEvent(new Event("popstate"));
+      };
+      document.addEventListener("click", window.mdClick, true);
+    </script>
+  </body>
+</html>
